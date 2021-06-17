@@ -4,12 +4,27 @@ const Product = require('../model/product');
 const router = express.Router();
 
 // GET : /products
-router.get('/', (req, res) => {
-  res.json('상품 전체보기');
+router.get('/', async (req, res) => {
+
+  try {
+    const result = await Product.find({});
+    res.json(result);
+  } catch (err) {
+    res.json(err);
+  }
+  // Product.find({})
+  //     .then((docs) => {
+  //       res.json(docs);
+  //     })
+  //     .catch((err) => {
+  //       res.json(err);
+  //     });
 });
 // GET : /products/:id
-router.get('/:id', (req, res) => {
-  res.json(req.params.id + '번 상품 상세보기')
+router.get('/:id', async (req, res) => {
+
+  const result = await Product.findOne({"id": req.params.id });
+  res.json(result);
 });
 // POST : /products
 router.post('/', (req, res) => {
@@ -18,13 +33,17 @@ router.post('/', (req, res) => {
   product.save().then(() => console.log('insert ok..'));
   res.json('상품 등록 완료');
 });
-// PUT : /products
-router.put('/', (req, res) => {
-  res.json('상품 수정');
+// PUT : /products -- //TODO 차후 구현
+router.put('/', async (req, res) => {
+  const data = req.body;
+  const product = new Product(data);
+  const result = await product.save();
+  res.json(result);
 });
 // DELETE : /products/:id
-router.delete('/:id', (req, res) => {
-  res.json(req.params.id + '번 상품 삭제');
+router.delete('/:id', async (req, res) => {
+  const result = await Product.findOneAndRemove({"id": req.params.id });
+  res.json(result);
 });
 
 
