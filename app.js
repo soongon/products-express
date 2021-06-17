@@ -1,11 +1,19 @@
 const createError = require('http-errors');
 const express = require('express');
 const logger = require('morgan');
+const mongoose = require('mongoose');
 
 const indexRouter = require('./routes/index');
 const productsRouter = require('./routes/products');
 
 const app = express();
+
+const dbUrl = 'mongodb+srv://admin:1234qwer@cluster0.9lxgd.mongodb.net/ktds?retryWrites=true&w=majority'
+mongoose.connect(dbUrl, {useNewUrlParser: true, useUnifiedTopology: true})
+    .then(
+        () => { console.log('connection ok..') },
+        err => { console.log(err) }
+    );
 
 app.use(logger('dev'));
 app.use(express.json());

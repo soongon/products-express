@@ -1,4 +1,6 @@
 const express = require('express');
+const Product = require('../model/product');
+
 const router = express.Router();
 
 // GET : /products
@@ -11,7 +13,10 @@ router.get('/:id', (req, res) => {
 });
 // POST : /products
 router.post('/', (req, res) => {
-  res.json('상품 등록');
+
+  const product = new Product(req.body);
+  product.save().then(() => console.log('insert ok..'));
+  res.json('상품 등록 완료');
 });
 // PUT : /products
 router.put('/', (req, res) => {
